@@ -188,7 +188,7 @@ func main() {
 		maxSpeed:            2.5,
 		minSpeed:            1,
 	}
-	g := newGoggle(20, 25, maxY, maxX, conf)
+	g := newGoggle(20, 250, maxY, maxX, conf)
 
 	for {
 		maxY, maxX = win.MaxYX()
