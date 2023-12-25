@@ -8,17 +8,6 @@ import (
 	"golang.org/x/exp/rand"
 )
 
-type config struct {
-	separationFactor    float64
-	alignmentFactor     float64
-	cohesionFactor      float64
-	turnImpulse         float64
-	margin              float64
-	separationThreshold float64
-	maxSpeed            float64
-	minSpeed            float64
-}
-
 type vec2 struct {
 	x, y float64
 }
@@ -45,6 +34,17 @@ func (v *vec2) multiplyScalar(scalar float64) {
 
 func (lhs vec2) distance(rhs vec2) float64 {
 	return math.Sqrt((lhs.x-rhs.x)*(lhs.x-rhs.x) + (lhs.y-rhs.y)*(lhs.y-rhs.y))
+}
+
+type config struct {
+	separationFactor    float64
+	alignmentFactor     float64
+	cohesionFactor      float64
+	turnImpulse         float64
+	margin              float64
+	separationThreshold float64
+	maxSpeed            float64
+	minSpeed            float64
 }
 
 type birdoid struct {
@@ -109,13 +109,10 @@ func (g *goggle) updateFlocks(maxY, maxX int) {
 			}
 
 			// neighbor position to calculate cohesion
-			avgPosition.x += b.flock[i].pos.x
-			avgPosition.y += b.flock[i].pos.y
+			avgPosition.add(b.flock[i].pos)
 
 			// avg neighbor heading for alignment
-			avgHeading.x += b.flock[i].moveDir.x
-			avgHeading.y += b.flock[i].moveDir.y
-
+			avgHeading.add(b.flock[i].moveDir)
 		}
 
 		invClose.multiplyScalar(g.config.separationFactor)
