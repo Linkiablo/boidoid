@@ -12,11 +12,11 @@ import (
 // TODO: find a more general configuration, independent of terminal size
 const SEPARATIONFACTOR = 0.05
 const ALIGNMENTFACTOR = 0.05
-const COHESIONFACTOR = 0.0005
+const COHESIONFACTOR = 0.0008
 const TURNIMPULSE = 0.2
-const MARGIN = 50
+const MARGIN = 25
 const SEPARATIONTHRESHOLD = 2
-const MAXSPEED = 3
+const MAXSPEED = 2.5
 const MINSPEED = 1
 
 func clamp(val, min, max float64) float64 {
@@ -133,7 +133,9 @@ type goggle struct {
 func newGoggle(radius float64, numBirdoids, maxY, maxX int) goggle {
 	var bs []birdoid
 	for i := 0; i < numBirdoids; i++ {
-		pos := vec2{rand.Float64() * float64(maxX), rand.Float64() * float64(maxY)}
+		// for now spawn in square area to avoid horizontal movement
+		pos := vec2{rand.Float64() * float64(maxY),
+			float64(maxX)/2 - float64(maxY)/2 + rand.Float64()*float64(maxY)}
 		moveDir := vec2{rand.Float64() * MINSPEED, rand.Float64() * MINSPEED}
 
 		bs = append(bs, birdoid{
