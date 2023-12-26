@@ -29,10 +29,10 @@ union vec2 {
 typedef struct boid {
     vec2 pos;
     vec2 dir;
-    std::vector<boid*> flock;
+    std::vector<boid *> flock;
 } boid;
 
-constexpr double distance(vec2 v1, vec2 v2) {
+double distance(vec2 v1, vec2 v2) {
     // t_low := v1.x - v2.x; t_high := v1.y - v2.y
     auto t = _mm_sub_pd(v1.m, v2.m);
     // t_low := t_low * t_low; t_high := t_high * t_high
