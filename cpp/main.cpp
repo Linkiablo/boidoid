@@ -3,6 +3,10 @@
 #include <ncurses.h>
 #include <vector>
 
+#ifdef _BENCHMARK
+#include <benchmark/benchmark.h>
+#endif
+
 double rand_max(double max) {
     return static_cast<double>(rand()) / static_cast<double>(RAND_MAX / max);
 }
@@ -151,6 +155,47 @@ void goggle::update(int max_y, int max_x) {
     }
 }
 
+#ifdef _BENCHMARK
+
+static void BM_250(benchmark::State &state) {
+
+    config cfg = {.separation_factor = 0.05,
+                  .alignment_factor = 0.05,
+                  .cohesion_factor = 0.0008,
+                  .turn_impulse = 0.2,
+                  .margin = 25,
+                  .separation_threshold = 2,
+                  .max_speed = 2.5,
+                  .min_speed = 1};
+
+    goggle g(20, 250, cfg, 1000, 1000);
+    for (auto _ : state) {
+        g.update(1000, 1000);
+    }
+}
+
+static void BM_500(benchmark::State &state) {
+
+    config cfg = {.separation_factor = 0.05,
+                  .alignment_factor = 0.05,
+                  .cohesion_factor = 0.0008,
+                  .turn_impulse = 0.2,
+                  .margin = 25,
+                  .separation_threshold = 2,
+                  .max_speed = 2.5,
+                  .min_speed = 1};
+
+    goggle g(20, 500, cfg, 1000, 1000);
+    for (auto _ : state) {
+        g.update(1000, 1000);
+    }
+}
+
+BENCHMARK(BM_250);
+BENCHMARK(BM_500);
+
+BENCHMARK_MAIN();
+#else
 int main() {
     srand(time(NULL));
 
@@ -190,3 +235,4 @@ int main() {
     endwin();
     return 0;
 }
+#endif
