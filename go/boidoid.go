@@ -81,22 +81,19 @@ func newGoggle(radius float64, numBirdoids, maxY, maxX int, conf config) goggle 
 
 func (g *goggle) updateFlocks(maxY, maxX int) {
 	for i := 0; i < len(g.birdoids); i++ {
-		g.birdoids[i].flock = []*birdoid{}
-	}
+		b := &g.birdoids[i]
+		b.flock = []*birdoid{}
 
-	for i := 0; i < len(g.birdoids); i++ {
 		for j := i + 1; j < len(g.birdoids); j++ {
-			if g.birdoids[i].pos.distance(g.birdoids[j].pos) < g.radius {
-				g.birdoids[i].flock =
-					append(g.birdoids[i].flock, &g.birdoids[j])
-				g.birdoids[j].flock =
-					append(g.birdoids[j].flock, &g.birdoids[i])
+			b1 := &g.birdoids[j]
+			if b.pos.distance(b1.pos) < g.radius {
+				b.flock =
+					append(b.flock, b1)
+				b1.flock =
+					append(b1.flock, b)
 			}
 		}
-	}
 
-	for i := 0; i < len(g.birdoids); i++ {
-		b := &g.birdoids[i]
 		invClose := vec2{0, 0}
 		avgHeading := vec2{0, 0}
 		avgPosition := vec2{0, 0}
