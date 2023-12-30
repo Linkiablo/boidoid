@@ -75,23 +75,19 @@ goggle::goggle(double r, size_t num_boids, config cfg, int max_y, int max_x) {
 }
 
 void goggle::update(int max_y, int max_x) {
-    for (auto &b : boids) {
-        b.flock.clear();
-    }
-
     for (size_t i = 0; i < boids.size(); i++) {
+        auto &b = boids[i];
+        b.flock.clear();
+
         for (size_t j = i + 1; j < boids.size(); j++) {
-            auto &b1 = boids[i];
             auto &b2 = boids[j];
-            auto d = distance(b1.pos, b2.pos);
+            auto d = distance(b.pos, b2.pos);
             if (d < this->r) {
-                b1.flock.push_back(&b2);
-                b2.flock.push_back(&b1);
+                b.flock.push_back(&b2);
+                b2.flock.push_back(&b);
             }
         }
-    }
 
-    for (auto &b : boids) {
         vec2 inv_close = {.m = _mm_setzero_pd()};
         vec2 avg_heading = {.m = _mm_setzero_pd()};
         vec2 avg_pos = {.m = _mm_setzero_pd()};
