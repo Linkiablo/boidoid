@@ -17,18 +17,6 @@ struct Boidoid {
     direction: Vec3,
 }
 
-impl Default for Boidoid {
-    fn default() -> Self {
-        Boidoid {
-            direction: Vec3 {
-                x: 1.,
-                y: 1.,
-                z: 0.,
-            },
-        }
-    }
-}
-
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
