@@ -1,15 +1,15 @@
 use bevy::prelude::*;
 use rand::{thread_rng, Rng};
 
-const NUM_BOIDS: usize = 800;
-const RADIUS: f32 = 60.;
+const NUM_BOIDS: usize = 100;
+const RADIUS: f32 = 30.;
 const SEPARATION_FACTOR: f32 = 0.15;
 const ALIGNMENT_FACTOR: f32 = 0.05;
 const COHESION_FACTOR: f32 = 0.0008;
-const TURN_IMPULSE: f32 = 0.1;
-const MARGIN: f32 = 200.;
-const SEPARATION_THRESHOLD: f32 = 10.;
-const MAX_SPEED: f32 = 3.;
+const TURN_IMPULSE: f32 = 0.2;
+const MARGIN: f32 = 100.;
+const SEPARATION_THRESHOLD: f32 = 5.;
+const MAX_SPEED: f32 = 2.;
 const MIN_SPEED: f32 = 1.;
 
 #[derive(Component, Clone)]
@@ -17,12 +17,18 @@ struct Boidoid {
     direction: Vec3,
 }
 
+#[bevy_main]
 fn main() {
-    App::new()
-        .add_plugins(DefaultPlugins)
+    let mut app = App::new();
+    app.add_plugins(DefaultPlugins)
         .add_systems(Startup, setup)
         .add_systems(Update, update_boids)
         .run();
+
+    #[cfg(target_os = "android")]
+    app.insert_resource(Msaa::Off);
+
+    app.run();
 }
 
 fn setup(mut commands: Commands, window: Query<&Window>) {

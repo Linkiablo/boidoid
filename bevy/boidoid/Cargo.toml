@@ -3,7 +3,23 @@ name = "boidoid"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "boidoid"
+crate-type = ["staticlib", "cdylib"]
+
+[package.metadata.android]
+package = "org.myself.boidoid"
+apk_name = "boidoid"
+# This strips debug symbols from the shared libraries, drastically reducing APK size. If you need them, remove the option.
+strip = "strip"
+build_targets = ["aarch64-linux-android", "armv7-linux-androideabi"]
+
+[package.metadata.android.signing.release]
+path = "/home/johannes/.android/release.keystore"
+keystore_password = "123456"
+
+[package.metadata.android.sdk]
+target_sdk_version = 34
 
 [dependencies]
 bevy = "0.12.1"
